@@ -1,12 +1,12 @@
-NAME = "kamangir_net"
+NAME = "blog"
 
 ICON = "📜"
 
 DESCRIPTION = f"{ICON} kamangir writes here."
 
-VERSION = "5.8.1"
+VERSION = "6.2.1"
 
-REPO_NAME = "-net"
+REPO_NAME = "blog"
 
 MARQUEE = "https://github.com/kamangir/assets2/blob/main/blog/blog.png?raw=true"
 
