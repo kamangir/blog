@@ -4,7 +4,7 @@ ICON = "📜"
 
 DESCRIPTION = f"{ICON} kamangir writes here."
 
-VERSION = "5.7.1"
+VERSION = "5.8.1"
 
 REPO_NAME = "-net"
 
