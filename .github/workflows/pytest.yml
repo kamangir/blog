@@ -1,0 +1,41 @@
+name: pytest
+
+on: [push]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, 'no-workflow')"
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+      - name: Run tests
+        env:
+          WEBDAV_HOSTNAME: ${{ secrets.WEBDAV_HOSTNAME }}
+          WEBDAV_LOGIN: ${{ secrets.WEBDAV_LOGIN }}
+          WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
+          BLUER_PLUGIN_SECRET: ${{ secrets.BLUER_PLUGIN_SECRET }}
+          S3_STORAGE_ENDPOINT_URL: ${{ secrets.S3_STORAGE_ENDPOINT_URL }}
+          S3_STORAGE_AWS_ACCESS_KEY_ID: ${{ secrets.S3_STORAGE_AWS_ACCESS_KEY_ID }}
+          S3_STORAGE_AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_STORAGE_AWS_SECRET_ACCESS_KEY }}
+        run: |
+          echo "WEBDAV_HOSTNAME: $WEBDAV_HOSTNAME"
+          echo "WEBDAV_LOGIN: $WEBDAV_LOGIN"
+          echo "WEBDAV_PASSWORD: $WEBDAV_PASSWORD"
+          echo "BLUER_PLUGIN_SECRET: $BLUER_PLUGIN_SECRET"
+          echo "S3_STORAGE_ENDPOINT_URL: $S3_STORAGE_ENDPOINT_URL"
+          echo "S3_STORAGE_AWS_ACCESS_KEY_ID: $S3_STORAGE_AWS_ACCESS_KEY_ID"
+          echo "S3_STORAGE_AWS_SECRET_ACCESS_KEY: $S3_STORAGE_AWS_SECRET_ACCESS_KEY"
+
+          pytest --verbose
